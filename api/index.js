@@ -1,22 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../public')));
 
-// Serve index.html for root path
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-// OpenWeatherMap API Key - Replace with your own from openweathermap.org
+// OpenWeatherMap API Key
 const API_KEY = (process.env.OPENWEATHER_API_KEY || 'YOUR_API_KEY_HERE').trim().replace(/^['"]|['"]$/g, '');
 const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5';
 
@@ -79,7 +74,7 @@ app.get('/api/weather/city', async (req, res) => {
   }
 });
 
-// Route to get 5-day forecast (OpenWeatherMap free tier)
+// Route to get 5-day forecast
 app.get('/api/forecast', async (req, res) => {
   try {
     const { city } = req.query;
@@ -163,17 +158,10 @@ app.get('/api/search-cities', async (req, res) => {
   }
 });
 
-// Catch-all route - serve index.html for SPA routing
+// Serve index.html for root and all other routes (SPA)
 app.get('*', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Only listen if not in Vercel serverless environment
-if (process.env.VERCEL !== '1') {
-  app.listen(PORT, () => {
-    console.log(`Weather API Server running on http://localhost:${PORT}`);
-    console.log('Make sure to set your OpenWeatherMap API key in .env file');
-  });
-}
-
+// Export for Vercel serverless
 module.exports = app;
