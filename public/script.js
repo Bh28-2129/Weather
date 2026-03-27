@@ -109,7 +109,7 @@ function setupEventListeners() {
 
 async function searchCities(query) {
     try {
-        const response = await fetch(`/api/search-cities?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`/.netlify/functions/search-cities?q=${encodeURIComponent(query)}`);
         const cities = await response.json();
         displaySuggestions(cities);
     } catch (error) {
@@ -154,7 +154,7 @@ async function fetchWeatherByCoordinates(lat, lon) {
         hideError();
 
         const response = await fetch(
-            `/api/weather/current?lat=${lat}&lon=${lon}`
+            `/.netlify/functions/weather-current?lat=${lat}&lon=${lon}`
         );
         
         if (!response.ok) {
@@ -182,7 +182,7 @@ async function fetchWeatherByCity(city) {
         showLoadingSpinner();
         hideError();
 
-        const response = await fetch(`/api/weather/city?city=${encodeURIComponent(city)}`);
+        const response = await fetch(`/.netlify/functions/weather-city?city=${encodeURIComponent(city)}`);
         
         if (!response.ok) {
             throw new Error('City not found');
@@ -207,7 +207,7 @@ async function fetchWeatherByCity(city) {
 async function fetchForecastByCoordinates(lat, lon) {
     try {
         const response = await fetch(
-            `/api/forecast/coords?lat=${lat}&lon=${lon}`
+            `/.netlify/functions/forecast-coords?lat=${lat}&lon=${lon}`
         );
         
         if (!response.ok) {
@@ -224,7 +224,7 @@ async function fetchForecastByCoordinates(lat, lon) {
 async function fetchForecastByCity(city) {
     try {
         const response = await fetch(
-            `/api/forecast?city=${encodeURIComponent(city)}`
+            `/.netlify/functions/forecast?city=${encodeURIComponent(city)}`
         );
         
         if (!response.ok) {

@@ -1,0 +1,13 @@
+[build]
+  command = "echo 'Build complete'"
+  publish = "public"
+  functions = "functions"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  environment = { OPENWEATHER_API_KEY = "@openweather_api_key" }
+
