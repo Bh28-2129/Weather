@@ -70,6 +70,19 @@ function setupEventListeners() {
         }
     });
 
+    // Search button click
+    document.getElementById('searchBtn').addEventListener('click', () => {
+        const city = document.getElementById('citySearch').value.trim();
+        if (city) {
+            fetchWeatherByCity(city);
+            document.getElementById('citySearch').value = '';
+            hideSuggestions();
+        } else {
+            alert('Please enter a city name');
+        }
+    });
+
+    // Enter key on search input
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             const city = e.target.value.trim();

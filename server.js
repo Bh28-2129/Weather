@@ -11,6 +11,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Serve index.html for root path
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 // OpenWeatherMap API Key - Replace with your own from openweathermap.org
 const API_KEY = (process.env.OPENWEATHER_API_KEY || 'YOUR_API_KEY_HERE').trim().replace(/^['"]|['"]$/g, '');
 const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5';
@@ -156,6 +161,11 @@ app.get('/api/search-cities', async (req, res) => {
     console.error('Error searching cities:', error.message);
     res.json([]);
   }
+});
+
+// Catch-all route - serve index.html for SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.listen(PORT, () => {
